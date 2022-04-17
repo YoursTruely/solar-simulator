@@ -1,0 +1,59 @@
+function initEventHandlers(canvas, camera) {
+  var dragging = false;         // Dragging or not
+  var lastX = -1, lastY = -1;   // Last position of the mouse
+
+  canvas.onmousedown = function(ev) {   // Mouse is pressed
+    var x = ev.clientX, y = ev.clientY;
+    // Start dragging if a moue is in <canvas>
+    var rect = ev.target.getBoundingClientRect();
+    if (rect.left <= x && x < rect.right && rect.top <= y && y < rect.bottom) {
+      lastX = x; lastY = y;
+      dragging = true;
+    }
+  };
+
+  canvas.onmouseup = function(ev) { dragging = false;  }; // Mouse is released
+
+  canvas.onmousemove = function(ev) { // Mouse is moved
+    var x = ev.clientX, y = ev.clientY;
+    if (dragging) {
+      var factor = 100/canvas.height; // The rotation ratio
+      var dx = factor * (x - lastX);
+      var dy = factor * (y - lastY);
+      // Limit x-axis rotation angle to -90 to 90 degrees
+      camera.pitch = Math.max(Math.min(camera.pitch - dy, 90.0), -90.0);
+      camera.yaw = (camera.yaw - dx + 360.0) % 360.0;
+      camera.compute_vm();
+      camera.compute_vp();
+    }
+    lastX = x, lastY = y;
+  };
+
+  document.onkeydown = (ev) => {
+    var ivm = new Matrix4();
+    var temp_mat = new Matrix4();
+    ivm.setInverseOf(camera.vm);
+    var transformedEyeDirection;
+    var change;
+    if(ev.key == "w"){
+      change = [0,0,-0.5,0.0]
+    }
+    else if(ev.key == "s"){
+      change = [0,0,0.5,0.0]
+    }
+    else if(ev.key == "a"){
+      change = [-0.5,0,0,0]
+    }
+    else if(ev.key == "d"){
+      change = [0.5,0,0,0]
+    }
+    
+    transformedEyeDirection = ivm.multiplyVector4(new Vector4(change));
+    camera.location = [camera.location[0] + transformedEyeDirection.elements[0],
+                        camera.location[1] + transformedEyeDirection.elements[1],
+                        camera.location[2] + transformedEyeDirection.elements[2]]
+    temp_mat.setTranslate(-transformedEyeDirection.elements[0],-transformedEyeDirection.elements[1],-transformedEyeDirection.elements[2]);
+    camera.vm.multiply(temp_mat)
+    camera.compute_vp()
+  };
+}

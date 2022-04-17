@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset = "utf-8" />
+        <title>Solar Sim</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+
+    <body>
+        <div id="canvas-container">
+        <canvas id="canvas" width="1200" height="700">Please use a browser that supports 'canvas' element</canvas>
+        </div>
+        <div class="slidecontainer">
+            <label for="myRange">Rotation speed:</label>
+            <input type="range" min="10000" max="100000" value="50000" class="slider" id="myRangeRot">
+        </div>
+
+        <div class="slidecontainer">
+            <label for="myRange">Revolution speed:</label>
+            <input type="range" min="1000000" max="10000000" value="5000000" class="slider" id="myRangeRev">
+        </div>
+
+        <div>
+            <p>Simulation controls:<br>
+            Keyboard Z: Play simulation<br>
+            Keyboard X: Pause<br>
+            Keyboard W, A, S, D: Scene navigation. 
+            W - Zoom in; S - Zoom out; A - Pan left, D - Pan right<br>
+            (use navigation while the simulation is playing i.e., while Z key is pressed)</p><br>
+        </div>
+
+        <script src="./lib/cuon-matrix.js"></script>
+        <script src="./lib/cuon-utils.js"></script>
+        <script src="./lib/webgl-debug.js"></script>
+        <script src="./lib/webgl-utils.js"></script>
+        <script src="camera.js"></script>
+        <script src="index_final1.js"></script>
+    </body>
+
+</html>
