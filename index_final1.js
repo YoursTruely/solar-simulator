@@ -165,7 +165,7 @@ orbits = create_ORBITS(data);
 planets = create_PLANETS(data);
 
 
-let camera = new Camera([0,2,0],0,0);
+let camera = new Camera([0,2,10],0,0);
 
 flythrough(canvas, camera)
 
